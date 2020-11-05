@@ -90,7 +90,7 @@ namespace Многоугольники
         }
         public override bool Check(int x, int y)
         {
-            if (Math.Abs(x - x0) <= R / 2 && Math.Abs(y - y0) <= R / 2)
+            if (y - y0 + R / 2 >= 2 * x0 - 2 * x && y - y0 + R / 2 >= 2 * x - 2 * x0 && y <= y0 + R / 2)
 
                 return true;
             else
