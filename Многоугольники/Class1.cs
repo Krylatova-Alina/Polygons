@@ -9,8 +9,10 @@ namespace Многоугольники
 {  
     public abstract class Vertex
     {
-        protected int x0;
-        protected int y0;
+        protected int x0, y0;
+        protected int delX, delY;
+        protected bool dragFlag;
+
         public static int R
         {
             get; set;
@@ -21,6 +23,9 @@ namespace Многоугольники
         }
         public int SetX { set { x0 = value; } get { return x0; } }
         public int SetY { set { y0 = value; } get { return y0; } }
+        public int DelX { set { delX = value; } get { return delX; } }
+        public int DelY { set { delY = value; } get { return delY; } }
+        public bool DragFlag { set { dragFlag = value; } get { return dragFlag; } }
         public Vertex()
         {
         }
@@ -28,6 +33,8 @@ namespace Многоугольники
         {            
             this.x0 = x;
             this.y0 = y;
+            delX = delY = 0;
+            dragFlag = false;
         }
         static Vertex()
         {

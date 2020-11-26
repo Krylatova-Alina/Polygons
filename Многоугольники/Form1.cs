@@ -15,13 +15,10 @@ namespace Многоугольники
 		List<Vertex> shapes = new List<Vertex>();
 		int flagVertex = 0;
 		bool Draw = false;
-		List<int> delsX = new List<int>();
-		List<int> delsY = new List<int>();		
 		bool DrawDrag;
-		List<bool> DrawDrags = new List<bool>();
 		public Form1()
 		{
-			InitializeComponent();			
+			InitializeComponent();		
 			DrawDrag = false;
 		}
 
@@ -54,17 +51,10 @@ namespace Многоугольники
 						if (shape.Check(e.X, e.Y))
 						{
 							DrawDrag = true;
-							DrawDrags.Add(true);
-							delsX.Add(e.X - shape.SetX);
-							delsY.Add(e.Y - shape.SetY);
+							shape.DragFlag = true;
+							shape.DelX = e.X - shape.SetX;
+							shape.DelY = e.Y - shape.SetY;
 						}
-						else
-						{
-							DrawDrags.Add(false);
-							delsX.Add(0);
-							delsY.Add(0);
-						}
-
 					if (!DrawDrag)
 					{
 						if (!Draw)
@@ -95,10 +85,10 @@ namespace Многоугольники
 			if (DrawDrag)
 			{
 				for (int i = 0; i < shapes.Count; i++)                   
-					if (DrawDrags[i])
+					if (shapes[i].DragFlag)
 					{
-						shapes[i].SetX = e.X - delsX[i];
-						shapes[i].SetY = e.Y - delsY[i];
+						shapes[i].SetX = e.X - shapes[i].DelX;
+						shapes[i].SetY = e.Y - shapes[i].DelY;
 					}
 			}
 			this.Refresh();
@@ -107,16 +97,13 @@ namespace Многоугольники
 		private void Form1_MouseUp(object sender, MouseEventArgs e)
 		{
 			DrawDrag = false;
-			DrawDrags.Clear();
-			delsX.Clear();
-			delsY.Clear();
+			for (int i = 0; i < shapes.Count; i++)
+				shapes[i].DragFlag = false;
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			DoubleBuffered = true;
 		}
-
-			
 	}
 }
