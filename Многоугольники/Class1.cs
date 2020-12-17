@@ -12,6 +12,7 @@ namespace Многоугольники
         protected int x0, y0;
         protected int delX, delY;
         protected bool dragFlag;
+        protected bool isInside;
 
         public static int R
         {
@@ -26,6 +27,7 @@ namespace Многоугольники
         public int DelX { set { delX = value; } get { return delX; } }
         public int DelY { set { delY = value; } get { return delY; } }
         public bool DragFlag { set { dragFlag = value; } get { return dragFlag; } }
+        public bool IsInside { set { isInside = value; } get { return isInside; } }
         public Vertex()
         {
         }

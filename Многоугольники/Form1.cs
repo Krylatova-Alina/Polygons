@@ -27,6 +27,41 @@ namespace Многоугольники
 			if (Draw)
 				foreach (Vertex shape in shapes)
 					shape.DrawFigure(e.Graphics);
+			if (shapes.Count > 2)
+			{
+				Pen pen = new Pen(Vertex.col);
+				for (int i = 0; i < shapes.Count; i++)
+					shapes[i].IsInside = false;
+				for (int i = 0; i < shapes.Count-1; i++)
+				{
+					for (int j = i + 1; j < shapes.Count; j++)
+					{
+						bool flagUp = false;
+						bool flagDown = false;
+						for (int k = 0; k < shapes.Count; k++)
+						{ 
+							if (k!=j && k!=i && i!=j)
+							{
+								int y;
+								if ((shapes[j].SetX - shapes[i].SetX) != 0)
+									y = (shapes[k].SetX - shapes[j].SetX) * (shapes[j].SetY - shapes[i].SetY) / (shapes[j].SetX - shapes[i].SetX) + shapes[j].SetY;
+								else
+									y = shapes[i].SetY;
+								if (y < shapes[k].SetY)
+									flagUp = true;
+								if (y >= shapes[k].SetY)
+									flagDown = true;
+							}
+						}
+						if (flagUp ^ flagDown)
+						{
+							shapes[i].IsInside = true;
+							shapes[j].IsInside = true;
+							e.Graphics.DrawLine(pen, shapes[i].SetX, shapes[i].SetY, shapes[j].SetX, shapes[j].SetY);
+						}
+					}
+				}
+			}
 		}
 
 		private void кругToolStripMenuItem_Click(object sender, EventArgs e)
@@ -43,8 +78,7 @@ namespace Многоугольники
 		}
 
 		private void Form1_MouseDown(object sender, MouseEventArgs e)
-		{
-			
+		{			
 			if (e.Button == MouseButtons.Left)
 				{
 					foreach (Vertex shape in shapes)
@@ -99,6 +133,14 @@ namespace Многоугольники
 			DrawDrag = false;
 			for (int i = 0; i < shapes.Count; i++)
 				shapes[i].DragFlag = false;
+			if (shapes.Count > 2)
+				for (int i = 0; i < shapes.Count; i++)
+				{
+					if (!shapes[i].IsInside)
+					{
+						shapes.RemoveAt(i);
+					}
+				}
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
