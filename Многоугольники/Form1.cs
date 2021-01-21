@@ -15,11 +15,12 @@ namespace Многоугольники
 		List<Vertex> shapes = new List<Vertex>();
 		int flagVertex = 0;
 		bool Draw = false;
-		bool DrawDrag;
+		bool DrawDrag, DrawDragFigure;
+
 		public Form1()
 		{
 			InitializeComponent();		
-			DrawDrag = false;
+			DrawDrag = DrawDragFigure = false;
 		}
 
 		private void Form1_Paint(object sender, PaintEventArgs e)
@@ -36,24 +37,25 @@ namespace Многоугольники
 				{
 					for (int j = i + 1; j < shapes.Count; j++)
 					{
-						bool flagUp = false;
-						bool flagDown = false;
+						bool flagUp = true;
+						bool flagDown = true;
 						for (int k = 0; k < shapes.Count; k++)
 						{ 
 							if (k!=j && k!=i && i!=j)
 							{
-								int y;
 								if ((shapes[j].SetX - shapes[i].SetX) != 0)
-									y = (shapes[k].SetX - shapes[j].SetX) * (shapes[j].SetY - shapes[i].SetY) / (shapes[j].SetX - shapes[i].SetX) + shapes[j].SetY;
+									if ((shapes[k].SetX - shapes[i].SetX) * (shapes[j].SetY - shapes[i].SetY) / (shapes[j].SetX - shapes[i].SetX) + shapes[i].SetY <= shapes[k].SetY)
+										flagUp = false;
+									else
+										flagDown = false;
 								else
-									y = shapes[i].SetY;
-								if (y < shapes[k].SetY)
-									flagUp = true;
-								if (y >= shapes[k].SetY)
-									flagDown = true;
+									if (shapes[k].SetX > shapes[i].SetX)
+									flagDown = false;
+								else
+									flagUp = false;
 							}
 						}
-						if (flagUp ^ flagDown)
+						if (flagUp || flagDown)
 						{
 							shapes[i].IsInside = true;
 							shapes[j].IsInside = true;
@@ -80,27 +82,77 @@ namespace Многоугольники
 		private void Form1_MouseDown(object sender, MouseEventArgs e)
 		{			
 			if (e.Button == MouseButtons.Left)
+			{
+				foreach (Vertex shape in shapes)
 				{
-					foreach (Vertex shape in shapes)
-						if (shape.Check(e.X, e.Y))
-						{
-							DrawDrag = true;
-							shape.DragFlag = true;
-							shape.DelX = e.X - shape.SetX;
-							shape.DelY = e.Y - shape.SetY;
-						}
-					if (!DrawDrag)
+					shape.DelX = e.X - shape.SetX;
+					shape.DelY = e.Y - shape.SetY;
+					if (shape.Check(e.X, e.Y))
 					{
-						if (!Draw)
-							Draw = true;
+						DrawDrag = true;
+						shape.DragFlag = true;						
+					}
+				}
+				if (!DrawDrag)
+				{
+					if (shapes.Count > 2)
+					{
+						int count = 0;
+						for (int i = 0; i < shapes.Count - 1; i++)
+						{
+							for (int j = i + 1; j < shapes.Count; j++)
+							{
+								bool flagUp = true;
+								bool flagDown = true;
+								for (int k = 0; k < shapes.Count; k++)
+								{
+									if (k != j && k != i && i != j)
+									{
+										if ((shapes[j].SetX - shapes[i].SetX) != 0)
+											if ((shapes[k].SetX - shapes[i].SetX) * (shapes[j].SetY - shapes[i].SetY) / (shapes[j].SetX - shapes[i].SetX) + shapes[i].SetY <= shapes[k].SetY)
+												flagUp = false;
+											else
+												flagDown = false;
+										else
+											if (shapes[k].SetX > shapes[i].SetX)
+											flagDown = false;
+										else
+											flagUp = false;
+									}
+								}
+								if (flagUp || flagDown)
+								{
+									int tempx;
+									if (shapes[j].SetX < shapes[i].SetX)
+										tempx = shapes[i].SetX;
+									else
+										tempx = shapes[j].SetX;
+									/*if (shapes[j].SetY - shapes[i].SetY != 0)
+									{*/
+										if ((e.Y - shapes[i].SetY) * (shapes[j].SetX - shapes[i].SetX) / (shapes[j].SetY - shapes[i].SetY) + shapes[i].SetX > e.X && (e.Y - shapes[i].SetY) *(shapes[j].SetX - shapes[i].SetX) / (shapes[j].SetY - shapes[i].SetY) + shapes[i].SetX < tempx)
+											count++;
+									/*}
+									else
+										if (e.X < shapes[i].SetX && e.X < shapes[j].SetY)
+										count++;*/
+										//**** ***** там какая-то *****на с продолжениями прямых попробуй кароч простроить шестиугольник а дальше сама ***сь АХАХАХА ИДИ *****
+								} 
+							}
+						}
+						if (count == 1)
+							DrawDragFigure = true;
+					}
+					if (!Draw)
+						Draw = true;
+					if (!DrawDragFigure)
 						switch (flagVertex)
 						{
 							case 0: shapes.Add(new Circle(e.X, e.Y)); break;
 							case 1: shapes.Add(new Rectangle(e.X, e.Y)); break;
 							case 2: shapes.Add(new Triangle(e.X, e.Y)); break;
 						}
-					}					
-				}
+				}					
+			}
 			if (e.Button == MouseButtons.Right)
 				{
 					for (int i = shapes.Count - 1; i >= 0; i--)
@@ -125,12 +177,21 @@ namespace Многоугольники
 						shapes[i].SetY = e.Y - shapes[i].DelY;
 					}
 			}
+			if (DrawDragFigure)
+			{
+				for (int i = 0; i < shapes.Count; i++)
+				{
+					shapes[i].SetX = e.X - shapes[i].DelX;
+					shapes[i].SetY = e.Y - shapes[i].DelY;
+				}
+					
+			}
 			this.Refresh();
 		}
 
 		private void Form1_MouseUp(object sender, MouseEventArgs e)
 		{
-			DrawDrag = false;
+			DrawDrag = DrawDragFigure = false;
 			for (int i = 0; i < shapes.Count; i++)
 				shapes[i].DragFlag = false;
 			if (shapes.Count > 2)
@@ -139,6 +200,7 @@ namespace Многоугольники
 					if (!shapes[i].IsInside)
 					{
 						shapes.RemoveAt(i);
+						i--;
 					}
 				}
 		}
