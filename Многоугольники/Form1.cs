@@ -205,6 +205,12 @@ namespace Многоугольники
 				}
 		}
 
+		private void цветФигурыToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			colorDialog1.ShowDialog();
+			Vertex.col = colorDialog1.Color;
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			DoubleBuffered = true;

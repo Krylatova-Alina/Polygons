@@ -33,13 +33,22 @@
             this.кругToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.квадратToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.треугольникToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.цветФигурыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.анимацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.радиусВершинToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.формаФигурыToolStripMenuItem});
+            this.формаФигурыToolStripMenuItem,
+            this.цветФигурыToolStripMenuItem,
+            this.анимацияToolStripMenuItem,
+            this.радиусВершинToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -77,6 +86,40 @@
             this.треугольникToolStripMenuItem.Text = "Треугольник";
             this.треугольникToolStripMenuItem.Click += new System.EventHandler(this.треугольникToolStripMenuItem_Click);
             // 
+            // цветФигурыToolStripMenuItem
+            // 
+            this.цветФигурыToolStripMenuItem.Name = "цветФигурыToolStripMenuItem";
+            this.цветФигурыToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
+            this.цветФигурыToolStripMenuItem.Text = "Цвет фигуры";
+            this.цветФигурыToolStripMenuItem.Click += new System.EventHandler(this.цветФигурыToolStripMenuItem_Click);
+            // 
+            // анимацияToolStripMenuItem
+            // 
+            this.анимацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.playToolStripMenuItem,
+            this.stopToolStripMenuItem});
+            this.анимацияToolStripMenuItem.Name = "анимацияToolStripMenuItem";
+            this.анимацияToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+            this.анимацияToolStripMenuItem.Text = "Анимация";
+            // 
+            // playToolStripMenuItem
+            // 
+            this.playToolStripMenuItem.Name = "playToolStripMenuItem";
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.playToolStripMenuItem.Text = "Play";
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopToolStripMenuItem.Text = "Stop";
+            // 
+            // радиусВершинToolStripMenuItem
+            // 
+            this.радиусВершинToolStripMenuItem.Name = "радиусВершинToolStripMenuItem";
+            this.радиусВершинToolStripMenuItem.Size = new System.Drawing.Size(104, 20);
+            this.радиусВершинToolStripMenuItem.Text = "Радиус вершин";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -105,6 +148,12 @@
         private System.Windows.Forms.ToolStripMenuItem кругToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem квадратToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem треугольникToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem цветФигурыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem анимацияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem playToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.ToolStripMenuItem радиусВершинToolStripMenuItem;
     }
 }
 
